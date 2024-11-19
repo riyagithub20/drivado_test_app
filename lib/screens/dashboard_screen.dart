@@ -15,22 +15,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedTab = 0;
   int selectedIndex = 0;
-
-  final List<Map<String, dynamic>> _items = [
-    {
-      'title': 'Expandable Item ',
-      'children': ['Child 1', 'Child 2', 'Child 3'],
-    },
-    {
-      'title': 'Expandable Item ',
-      'children': ['Child 1', 'Child 2'],
-    },
-    {
-      'title': 'Expandable Item ',
-      'children': ['Child 1', 'Child 2', 'Child 3', 'Child 4'],
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -219,15 +203,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemCount: companyProvider.company.length,
                     itemBuilder: (context, index) {
                       final company = companyProvider.company[index];
-
-                      // Use a fallback list if company.email is null or empty
-                      List<String> emails = company.email != null &&
-                              company.email!.isNotEmpty
-                          ? [company.email!] // If email exists, add to the list
-                          : [
-                              'example@domain.com',
-                              'contact@company.com'
-                            ]; // Sample emails for demonstration
+                      List<String> emails =
+                          company.email != null && company.email!.isNotEmpty
+                              ? [company.email!]
+                              : ['example@domain.com', 'contact@company.com'];
 
                       return ExpansionTile(
                         title: ListTile(
@@ -247,66 +226,116 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    // Add functionality to add an email
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        String newEmail = '';
-                                        return AlertDialog(
-                                          title: const Text('Add Email'),
-                                          content: TextField(
-                                            onChanged: (value) {
-                                              newEmail = value;
-                                            },
-                                            decoration: const InputDecoration(
-                                              hintText: 'Enter email',
-                                            ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (newEmail.isNotEmpty) {
-                                                  emails.add(newEmail);
-                                                }
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Add'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.person_add_alt_outlined,
-                                    color: Colors.red,
+                                Container(
+                                  width: double
+                                      .infinity, // Makes the container take up full width
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
                                   ),
-                                  label: const Text(
-                                    'Add Email',
-                                    style: TextStyle(color: Colors.red),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          String newEmail = '';
+                                          return AlertDialog(
+                                            title: const Text('Add User'),
+                                            content: TextField(
+                                              onChanged: (value) {
+                                                newEmail = value;
+                                              },
+                                              decoration: const InputDecoration(
+                                                hintText: 'Enter email',
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (newEmail.isNotEmpty) {
+                                                    emails.add(newEmail);
+                                                  }
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Add'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.red,
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal:
+                                              16), // Optional for better spacing
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start, // Aligns the content to the left
+                                      children: [
+                                        const Icon(
+                                          Icons.person_add_alt_outlined,
+                                          color: Colors.red, // Icon color
+                                        ),
+                                        const SizedBox(
+                                            width:
+                                                8), // Optional space between icon and text
+                                        const Text(
+                                          'Add User',
+                                          style: TextStyle(
+                                              color: Colors.red), // Text color
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                for (String email
-                                    in emails) // Iterate through emails
-                                  ListTile(
-                                    leading: const Icon(
-                                      Icons.email_outlined,
-                                      color: Colors.black,
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                for (String email in emails)
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                     ),
-                                    title: Text(email),
+                                    child: ListTile(
+                                      leading: const Icon(
+                                        Icons.email_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      title: Text(email),
+                                    ),
                                   ),
                               ],
                             ),
