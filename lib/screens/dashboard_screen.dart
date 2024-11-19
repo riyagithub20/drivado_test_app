@@ -206,37 +206,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
               ),
             if (_selectedTab == 1)
-              // Consumer<CompanyProvider>(
-              //     builder: (context, companyProvider, child) {
-              //   if (companyProvider.isLoading) {
-              //     return const CircularProgressIndicator();
-              //   }
-              //   return ListView.builder(
-              //       physics: NeverScrollableScrollPhysics(),
-              //       shrinkWrap: true,
-              //       itemCount: companyProvider.company.length,
-              //       itemBuilder: (context, index) {
-              //         companyProvider.company
-              //             .map(
-              //               (item) => ExpansionTile(
-              //                 leading: const Icon(Icons.apartment_outlined,
-              //                     color: Colors.black),
-              //                 title: Text(
-              //                     companyProvider.company[index].companyName ??
-              //                         ""),
-              //                 // children: (item['children'] as List<String>)
-              //                 //     .map((child) => ListTile(title: Text(child)))
-              //                 //     .toList(),
-              //               ),
-              //             )
-              //             .toList();
-              //       });
-              // })
-
               Consumer<CompanyProvider>(
                 builder: (context, companyProvider, child) {
                   if (companyProvider.isLoading) {
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                   return ListView.builder(
                     shrinkWrap: true,
@@ -244,21 +219,99 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     itemCount: companyProvider.company.length,
                     itemBuilder: (context, index) {
                       final company = companyProvider.company[index];
-                      return ListTile(
-                        leading: const Icon(Icons.apartment_outlined,
-                            color: Colors.black),
-                        title: Text(
-                            companyProvider.company[index].companyName ?? ""),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CompanyDetailsScreen(
-                                company: company,
+
+                      // Use a fallback list if company.email is null or empty
+                      List<String> emails = company.email != null &&
+                              company.email!.isNotEmpty
+                          ? [company.email!] // If email exists, add to the list
+                          : [
+                              'example@domain.com',
+                              'contact@company.com'
+                            ]; // Sample emails for demonstration
+
+                      return ExpansionTile(
+                        title: ListTile(
+                          leading: const Icon(Icons.apartment_outlined,
+                              color: Colors.black),
+                          title: Text(company.companyName ?? ""),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CompanyDetailsScreen(
+                                  company: company,
+                                ),
                               ),
+                            );
+                          },
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    // Add functionality to add an email
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        String newEmail = '';
+                                        return AlertDialog(
+                                          title: const Text('Add Email'),
+                                          content: TextField(
+                                            onChanged: (value) {
+                                              newEmail = value;
+                                            },
+                                            decoration: const InputDecoration(
+                                              hintText: 'Enter email',
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (newEmail.isNotEmpty) {
+                                                  emails.add(newEmail);
+                                                }
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Add'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.person_add_alt_outlined,
+                                    color: Colors.red,
+                                  ),
+                                  label: const Text(
+                                    'Add Email',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                                for (String email
+                                    in emails) // Iterate through emails
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.email_outlined,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text(email),
+                                  ),
+                              ],
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       );
                     },
                   );
