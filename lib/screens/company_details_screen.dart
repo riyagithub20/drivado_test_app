@@ -1,11 +1,11 @@
-import 'package:drivado_test_app/models/users.dart';
+import 'package:drivado_test_app/models/company.dart';
 import 'package:drivado_test_app/widgets/details_widget.dart';
 import 'package:flutter/material.dart';
 
-class UserDetailsScreen extends StatelessWidget {
-  final Users user;
+class CompanyDetailsScreen extends StatelessWidget {
+  final Company company;
 
-  const UserDetailsScreen({super.key, required this.user});
+  const CompanyDetailsScreen({super.key, required this.company});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class UserDetailsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'User Details',
+                              'Company Details',
                               style: TextStyle(
                                 color: Colors.grey.shade600,
                                 fontSize: 20,
@@ -128,64 +128,52 @@ class UserDetailsScreen extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 34,
-                              backgroundImage: NetworkImage(user.avatar ?? ""),
+                              backgroundImage: NetworkImage(company.logo ?? ""),
                             ),
                             const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user.name ?? '',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("User "),
-                                    Container(
-                                      width: 6,
-                                      height: 6,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.black,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(user.email ?? ''),
-                                  ],
-                                )
-                              ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    company.companyName ?? '',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(company.email ?? ''),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 20),
                         Column(
                           children: [
-                            ItemRow(
-                              icon: Icons.person_2_outlined,
-                              title: 'Name',
-                              text: user.name ?? '',
-                            ),
-                            ItemRow(
-                              icon: Icons.email_outlined,
-                              title: 'Email ID',
-                              text: user.email ?? '',
+                            const ItemRow(
+                              icon: Icons.link_outlined,
+                              title: 'Website',
+                              text: "drivado.com",
                             ),
                             ItemRow(
                               icon: Icons.phone,
                               title: 'Mob. number',
-                              text: user.mobileNumber ?? '',
+                              text: company.mobileNumber ?? '',
                             ),
                             const ItemRow(
-                              icon: Icons.chat_rounded,
-                              title: 'Language',
-                              text: "English",
+                              icon: Icons.money_outlined,
+                              title: 'GST/VAT',
+                              text: "Undefined",
                             ),
                             ItemRow(
-                              icon: Icons.money_outlined,
-                              title: 'Currecy',
-                              text: user.currency ?? "",
+                              icon: Icons.location_on_outlined,
+                              title: 'Address',
+                              text: company.mobileNumber ?? '',
                             ),
                           ],
                         )
@@ -218,11 +206,11 @@ class UserDetailsScreen extends StatelessWidget {
                         ),
                         CreditLimit(
                           title: "Total unpaid booking",
-                          text: user.totalUnpaidBooking ?? "",
+                          text: company.totalUnpaidBooking ?? "",
                         ),
                         CreditLimit(
                           title: "Available credit Limit",
-                          text: user.totalUnpaidBooking ?? "",
+                          text: company.totalUnpaidBooking ?? "",
                         ),
                         const SizedBox(height: 20),
                       ],

@@ -1,3 +1,4 @@
+import 'package:drivado_test_app/screens/company_details_screen.dart';
 import 'package:drivado_test_app/screens/user_details_screen.dart';
 import 'package:drivado_test_app/services/company_services.dart';
 import 'package:drivado_test_app/services/user_services.dart';
@@ -242,11 +243,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: companyProvider.company.length,
                     itemBuilder: (context, index) {
+                      final company = companyProvider.company[index];
                       return ListTile(
                         leading: const Icon(Icons.apartment_outlined,
                             color: Colors.black),
                         title: Text(
                             companyProvider.company[index].companyName ?? ""),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CompanyDetailsScreen(
+                                company: company,
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   );
