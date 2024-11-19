@@ -54,7 +54,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 CircleAvatar(
                   backgroundColor: Colors.grey.shade300,
-                  child: const Icon(Icons.person, color: Colors.black),
+                  child: Image.asset(
+                    'assets/images/profile.png',
+                    color: Colors.black,
+                    width: 34,
+                    height: 34,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Text('Image not found!',
+                          style: TextStyle(color: Colors.white));
+                    },
+                  ),
                 ),
                 const SizedBox(width: 10),
                 const Column(
@@ -105,7 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(80),
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
